@@ -22,8 +22,7 @@ import argparse
 import os
 import re
 import sys
-
-import six
+from io import BytesIO
 
 from Crypto.Hash import MD5
 
@@ -59,8 +58,8 @@ def check_list(fileobj):
 
 
 def make_file(txt):
-    f = six.BytesIO()
-    if isinstance(txt, six.binary_type):
+    f = BytesIO()
+    if isinstance(txt, bytes):
         f.write(txt)
     else:
         f.write(txt.encode("utf-8"))

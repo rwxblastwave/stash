@@ -8,8 +8,11 @@ import threading
 import functools
 import traceback
 import tempfile
+from io import StringIO
 
-from six import StringIO, text_type, binary_type, PY3
+text_type = str
+binary_type = bytes
+PY3 = sys.version_info[0] >= 3
 
 try:
     file

@@ -23,7 +23,9 @@ import select
 import time
 import sys
 from mlpatches import base, l2c
-from six import integer_types, string_types
+
+integer_types = (int,)
+string_types = (str,)
 
 _stash = base._stash
 list2cmdline = l2c.list2cmdline

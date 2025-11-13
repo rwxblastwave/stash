@@ -18,8 +18,6 @@ import os
 import sys
 from functools import wraps
 
-from six.moves import input
-
 _stash = globals()["_stash"]
 
 try:

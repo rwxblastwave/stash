@@ -8,10 +8,10 @@ import json
 import re
 import zipfile
 import platform
+import sys
 from io import open
 
-import six
-from six.moves import configparser
+import configparser
 
 try:
     from stashutils.extensions import create_command
@@ -79,7 +79,7 @@ def generate_filename(
     Generate a filename for the wheel and return it.
     """
     if python_tag is None:
-        if six.PY3:
+        if sys.version_info[0] >= 3:
             python_tag = "py3"
         else:
             python_tag = "py2"
@@ -105,7 +105,7 @@ def wheel_is_compatible(filename):
     if ("py2.py3" in data["python_tag"]) or ("py3.py2" in data["python_tag"]):
         # only here to skip elif/else
         pass
-    elif six.PY3:
+    elif sys.version_info[0] >= 3:
         if not data["python_tag"].startswith("py3"):
             return False
     else:

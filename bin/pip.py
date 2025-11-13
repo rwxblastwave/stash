@@ -32,15 +32,17 @@ import traceback
 import platform
 import json
 
-import six
+from configparser import ConfigParser, NoSectionError
+from itertools import filterfalse
 from distutils.util import convert_path
 from fnmatch import fnmatchcase
 
 # noinspection PyUnresolvedReferences
-from six.moves import filterfalse
-
 from stashutils.extensions import create_command
 from stashutils.wheels import Wheel, wheel_is_compatible
+
+text_type = str
+binary_type = bytes
 
 _stash = globals()["_stash"]
 VersionSpecifier = _stash.libversion.VersionSpecifier  # alias for readability
@@ -479,12 +481,6 @@ def save_current_sys_modules():
         sys.modules[k] = v
 
 
-# warning: the ConfigParser may refer to a different class depening on the used py version
-# though I believe that pip does not use interpolation, so we *should* be safe
-# noinspection PyUnresolvedReferences
-from six.moves.configparser import ConfigParser, NoSectionError
-
-
 class CIConfigParer(ConfigParser):
     """
     This config parser is case insensitive for section names so that
@@ -797,7 +793,7 @@ class ArchiveFileInstaller(object):
             )
 
         package_dirs = kwargs.get("package_dir", {})
-        use_2to3 = kwargs.get("use_2to3", False) and six.PY3
+        use_2to3 = kwargs.get("use_2to3", False)
 
         files_installed = []
 
@@ -885,7 +881,7 @@ class ArchiveFileInstaller(object):
 
         # handle entry points
         entry_points = kwargs.get("entry_points", {})
-        if isinstance(entry_points, (six.binary_type, six.text_type)):
+        if isinstance(entry_points, (binary_type, text_type)):
             if pkg_resources is not None:
                 entry_points = {
                     s: c for s, c in pkg_resources.split_sections(entry_points)
@@ -899,7 +895,7 @@ class ArchiveFileInstaller(object):
             if self.verbose:
                 print("Handling entrypoints for: " + epn)
             ep = entry_points[epn]
-            if isinstance(ep, (six.binary_type, six.text_type)):
+            if isinstance(ep, (binary_type, text_type)):
                 ep = [ep]
             if epn == "console_scripts":
                 for dec in ep:
@@ -926,7 +922,7 @@ if __name__ == "__main__":
 
         # Recursively Handle dependencies
         dependencies = kwargs.get("install_requires", [])
-        if isinstance(dependencies, (six.text_type, six.binary_type)):
+        if isinstance(dependencies, (text_type, binary_type)):
             # must be split into lines
             dependencies = dependencies.splitlines()
         # add extra dependencies
@@ -1512,13 +1508,11 @@ class PyPIRepository(PackageRepository):
                     # compatible with both py versions
                     return True
                 elif pv.startswith("2") or pv == "py2":
-                    # py2 release
-                    if not six.PY3:
-                        return True
+                    # py2 release is not compatible with Python 3 runtime
+                    return False
                 elif pv.startswith("3") or pv == "py3":
                     # py3 release
-                    if six.PY3:
-                        return True
+                    return True
                 elif pv == "source":
                     # i honestly have no idea what this means
                     # i first assumed it means "this source is compatible with both", so just return True

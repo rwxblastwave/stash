@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """base patches for mount."""
 
+import builtins
 import os
 import stat as _stat
 
-from six import text_type
-from six.moves import builtins
+text_type = str
 
 from mlpatches import base
 
@@ -343,14 +343,6 @@ class Py3OpenPatch(base.FunctionPatch):
     replacement = open
 
 
-class SixOpenPatch(base.FunctionPatch):
-    """patch for builtins.open()"""
-
-    module = "six.moves.builtins"
-    function = "open"
-    replacement = open
-
-
 class Py2GetcwdPatch(base.FunctionPatch):
     """patch for os.getcwd()"""
 
@@ -465,7 +457,6 @@ LISTDIR_PATCH = ListdirPatch()
 
 PY2_OPEN_PATCH = Py2OpenPatch()
 PY3_OPEN_PATCH = Py3OpenPatch()
-SIX_OPEN_PATCH = SixOpenPatch()
 
 PY2_GETCWD_PATCH = Py2GetcwdPatch()
 PY3_GETCWD_PATCH = Py3GetcwdPatch()

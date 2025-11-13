@@ -5,7 +5,7 @@ import ast
 import os
 import threading
 
-from six import string_types
+string_types = (str,)
 
 import console
 import ui

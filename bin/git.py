@@ -31,11 +31,8 @@ import os
 import posix
 import subprocess
 import sys
-
-from six import StringIO
-from six.moves import input
-from six.moves.urllib.parse import urlparse, urlunparse
-from six import iteritems
+from io import StringIO
+from urllib.parse import urlparse, urlunparse
 
 import console
 import editor  # for reloading current file
@@ -274,8 +271,8 @@ def unstage_all(commit="HEAD"):
     for entry in repo.object_store.iter_tree_contents(tree_id):
         unstage(commit, [entry.path])
 
-    for entry in iteritems(index):
-        unstage(commit, [entry[0]])
+    for path, _ in index.items():
+        unstage(commit, [path])
 
 
 def git_init(args):
@@ -290,7 +287,7 @@ def git_status(args):
         repo = _get_repo()
         status = porcelain.status(repo.repo.path)
         print("STAGED")
-        for k, v in iteritems(status.staged):
+        for k, v in status.staged.items():
             if v:
                 print(k, v)
         print("UNSTAGED LOCAL MODS")
@@ -837,7 +834,7 @@ if __name__ == "__main__":
 
     ap = argparse.ArgumentParser()
     subparser = ap.add_subparsers()
-    for key, value in iteritems(commands):
+    for key, value in commands.items():
         sp = subparser.add_parser(key, help=command_help[key], add_help=False)
         sp.set_defaults(func=commands[key])
     ns, args = ap.parse_known_args()

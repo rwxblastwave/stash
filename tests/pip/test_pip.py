@@ -3,8 +3,7 @@
 
 import sys
 import unittest
-
-from six.moves import reload_module
+from importlib import reload
 
 from stash.tests.stashtest import (
     StashTestCase,
@@ -41,7 +40,7 @@ class PipTests(StashTestCase):
 
     def reload_module(self, m):
         """reload a module."""
-        reload_module(m)
+        reload(m)
 
     def assert_did_run_setup(self, output, allow_source=True, allow_wheel=True):
         """assert that the output shows that either setup.py was successfully executed or a wheel was installed."""

@@ -13,11 +13,9 @@ import logging.handlers
 import os
 import platform
 import sys
-from io import IOBase
+from io import IOBase, BytesIO, StringIO
 
-import six
-from six import BytesIO, StringIO
-from six.moves.configparser import ConfigParser
+from configparser import ConfigParser
 
 # noinspection PyPep8Naming
 from .system.shcommon import (
@@ -107,7 +105,7 @@ class StaSh(object):
     utility interfaces to running scripts.
     """
 
-    PY3 = six.PY3
+    PY3 = sys.version_info[0] >= 3
 
     def __init__(
         self,
@@ -226,7 +224,7 @@ class StaSh(object):
         config.optionxform = str  # make it preserve case
 
         # defaults
-        if not six.PY3:
+        if not self.PY3:
             config.readfp(BytesIO(_DEFAULT_CONFIG))
         else:
             config.read_file(StringIO(_DEFAULT_CONFIG))

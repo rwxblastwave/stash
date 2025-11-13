@@ -12,7 +12,8 @@ from stash.system.shcommon import _STASH_EXTENSION_PATCH_PATH as EPP
 
 from stashutils.core import load_from_dir
 
-from six import text_type, binary_type
+text_type = str
+binary_type = bytes
 
 # alias load_from_dir (so you can access it trough this namespace)
 load_from_dir = load_from_dir

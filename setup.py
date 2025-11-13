@@ -46,7 +46,6 @@ from setuptools import setup, find_packages
 if sys.version_info.major == 2:
     INSTALL_REQUIREMENTS = [
         "rsa==4.5",
-        "six",  # required by StaSh
         "pyperclip",  # required by libdist for copy/paste on PC
         "requests==2.9.1",
         "pycrypto==2.6",
@@ -60,7 +59,6 @@ if sys.version_info.major == 2:
 else:
     INSTALL_REQUIREMENTS = (
         [
-            "six",  # required by StaSh
             "pyperclip",  # required by libdist for copy/paste on PC
             "requests",
             "pycrypto",
