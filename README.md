@@ -42,7 +42,7 @@ execute. It installs StaSh as a Python module under the `site-packages`
 folder (`~/Documents/site-packages/stash`) and copies **a launching script,
 `~/Documents/launch_stash.py`** for easy access.
 
-*StaSh works with both Pythonista 2 and 3, though not all commands support python3.*
+*StaSh now requires the Python 3 runtime that ships with modern versions of Pythonista (Pythonista 3). The legacy Pythonista 2 / Python 2 runtime is no longer supported.*
 
 *If you have previous versions of StaSh installed (e.g. v0.4.x),
 You may need to restart Pythonista BEFORE the installation.*
@@ -53,9 +53,7 @@ You may need to restart Pythonista BEFORE the installation.*
 you can choose to directly clone or download the
 [repository](https://github.com/ywangd/stash).*
 
-*StaSh requires Pythonista v2.0 or Pythonista3 as the new ObjC feature is heavily used. For
-older Pythonista 1.5 compatible version, please refer to the
-[v0.4](https://github.com/ywangd/stash/tree/v0.4) branch.*
+*StaSh requires Pythonista 3 (the ObjC bridge introduced in Pythonista 2.0+ is heavily used). For the historical Pythonista 1.5-compatible version, please refer to the [v0.4](https://github.com/ywangd/stash/tree/v0.4) branch.*
 
 Starting with `0.7.4`, StaSh supports being run on a PC using the `tkinter` module. This is intended for development purposes and may not offer you the best user experience. To install StaSh on your PC, either use the line above or clone this repository and run `setup.py`.
 
