@@ -65,6 +65,41 @@ alias unmount='umount'
 )
 
 
+def _keyboard_interrupt_reason(exc):
+    """Return a cleaned-up textual representation for a KeyboardInterrupt."""
+
+    if exc is None:
+        return ""
+
+    reason = str(exc).strip()
+    return reason
+
+
+def _should_suppress_keyboard_interrupt(reason):
+    """Return True when the given reason represents a clean exit."""
+
+    if not reason:
+        return False
+
+    head, sep, tail = reason.partition(":")
+    if sep and head.strip().lower() == "exit":
+        try:
+            return int(tail.strip()) == 0
+        except ValueError:
+            return False
+
+    return False
+
+
+def _format_keyboard_interrupt_message(reason):
+    """Format the message shown to the user for KeyboardInterrupt events."""
+
+    if not reason:
+        return "^C\n"
+
+    return "^C\nKeyboardInterrupt: %s\n" % reason
+
+
 class ShRuntime(object):
     """
     Runtime class responsible for parsing and executing commands.
@@ -357,8 +392,10 @@ class ShRuntime(object):
                 self.write_error_message(final_errs, msg)
 
             except KeyboardInterrupt as e:
-                msg = "^C\nKeyboardInterrupt: %s\n" % e.args[0]
-                self.write_error_message(final_errs, msg)
+                reason = _keyboard_interrupt_reason(e)
+                if not _should_suppress_keyboard_interrupt(reason):
+                    msg = _format_keyboard_interrupt_message(reason)
+                    self.write_error_message(final_errs, msg)
 
             # This catch all exception handler is to handle errors outside of
             # run_pipe_sequence. The traceback print is mainly for debugging
