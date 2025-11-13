@@ -6,7 +6,7 @@ This guide summarizes the process of porting StaSh to another platform.
 - This document may be outdated. When this document describes the behavior of StaSh incorectly, the current behaviour of StaSh takes precedent (except when it is obviously a bug). In this case, please submit a fix to this document.
 - Before you start porting, ensure your work is based on the latest `dev` status
 - Read this document before starting your work, When I started adding an UI for desktop use, I had to switch the UI framework multiple times because I was not aware of all requirements.
-- You will have to modify a few files already in place. When doing so, ensure the files **still run on both py2 and py3 without any non-standard dependencies**.
+- You will have to modify a few files already in place. When doing so, ensure the files **continue to run on the supported Python 3 runtime without any non-standard dependencies**.
 - Most of these methods may be called from threads. It is your responsibility to ensure that this works.
 - There are no tests cases for the UI.
 
@@ -22,7 +22,7 @@ The porting process can be divided into the following parts:
 
 ## Getting started
 
-You will need to find a way to accurately detect if StaSh runs on the target platform. This must be done using the standard library and must work with both py2 and py3.
+You will need to find a way to accurately detect if StaSh runs on the target platform. This must be done using the standard library and must work with the supported Python 3 runtime.
 
 For example, StaSh sets `ON_TRAVIS = "TRAVIS" in os.environ` to detect if we are running on Travis CI. In this case, a stub UI will be loaded.
 
@@ -200,7 +200,7 @@ StaSh uses a file called `libdist.py` for os-specific interactions and values.
 
 - `clipboard_get()` and `clipboard_set(s)`: get or set the clipbopard. works with unicode.
 - `SITE_PACKAGES_FOLDER` is the path to the directoy in which `pip` will install modules into.
-- `SITE_PACKAGES_FOLDER_6` is like `SITE_PACKAGES_FOLDER`, but should point to a directory shared by py2 and py3. If unavailable, use `None`.
+- `SITE_PACKAGES_FOLDER_6` is like `SITE_PACKAGES_FOLDER`, but historically pointed to a directory shared by Pythonista's Python 2 and Python 3 runtimes. If your port has no such legacy requirement, set it to `None`.
 - `BUNDLED_MODULES` is a list of `str`. It contains the preinstalled 3rd party modules. `pip` will skip these modules.
 - `open_in(path)` should open the given file in another application. If possible, let the user decide.
 - `quicklook(path)` should show a quicklook at the file. May be the same as `open_in`.
