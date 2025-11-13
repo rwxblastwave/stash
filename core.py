@@ -218,13 +218,13 @@ class StaSh(object):
         worker.join()
         return worker
 
-    @staticmethod
-    def _load_config(no_cfgfile=False):
+    @classmethod
+    def _load_config(cls, no_cfgfile=False):
         config = ConfigParser()
         config.optionxform = str  # make it preserve case
 
         # defaults
-        if not self.PY3:
+        if not cls.PY3:
             config.readfp(BytesIO(_DEFAULT_CONFIG))
         else:
             config.read_file(StringIO(_DEFAULT_CONFIG))
