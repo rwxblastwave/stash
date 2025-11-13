@@ -1,9 +1,9 @@
-"""
-Tkinter UI for StaSh
-"""
+"""Tkinter UI for StaSh."""
 
-import six
-from six.moves import tkinter, tkinter_messagebox, tkinter_scrolledtext, queue
+import queue
+import tkinter
+from tkinter import messagebox as tkinter_messagebox
+from tkinter import scrolledtext as tkinter_scrolledtext
 
 from ..shscreens import ShChar
 from ..shcommon import (
@@ -18,6 +18,8 @@ from ..shcommon import (
     K_HIST,
     K_CZ,
     K_KB,
+    binary_type,
+    text_type,
 )
 from .base import ShBaseUI, ShBaseTerminal, ShBaseSequentialRenderer
 
@@ -217,7 +219,7 @@ class ShTerminal(ShBaseTerminal):
         """
         Called when a key was pressed.
         :param event: the event which fired this callback
-        :type event: six.moves.tkinter.Event
+        :type event: tkinter.Event
         """
         # get the current position
         cp = (
@@ -302,7 +304,7 @@ class ShTerminal(ShBaseTerminal):
         """
         Called when the focus was lost.
         :param event: the event which fired this callback
-        :type event: six.moves.tkinter.Event
+        :type event: tkinter.Event
         """
         self.stash.user_action_proxy.tv_responder.textview_did_begin_editing(None)
 
@@ -310,7 +312,7 @@ class ShTerminal(ShBaseTerminal):
         """
         Called when the focus was lost.
         :param event: the event which fired this callback
-        :type event: six.moves.tkinter.Event
+        :type event: tkinter.Event
         """
         self.stash.user_action_proxy.tv_responder.textview_did_end_editing(None)
 
@@ -624,7 +626,7 @@ class ShTerminal(ShBaseTerminal):
         for c in text:
             a = 1
             ctkp = self._tuple_to_tk_index(self._rel_cursor_pos_to_abs_pos(cp))
-            if isinstance(c, (six.binary_type, six.text_type)):
+            if isinstance(c, (binary_type, text_type)):
                 self._txt.insert(ctkp, c)
             elif isinstance(c, ShChar):
                 if not self._colors_initialized:

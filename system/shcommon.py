@@ -11,7 +11,9 @@ import threading
 import ctypes
 from itertools import chain
 
-import six
+text_type = str
+binary_type = bytes
+integer_types = (int,)
 
 IN_PYTHONISTA = sys.executable.find("Pythonista") >= 0
 
@@ -27,7 +29,7 @@ if IN_PYTHONISTA:
         python_capi = ctypes.pythonapi
     else:
         # The default pythonapi always points to Python 3 in Pythonista 3
-        if six.PY3:
+        if sys.version_info[0] >= 3:
             python_capi = ctypes.pythonapi
         else:
             # We need to load the Python 2 API manually
@@ -89,7 +91,7 @@ _EXTERNAL_DIRS = [
 ]
 
 # Python 3 or not Python 3
-PY3 = six.PY3
+PY3 = sys.version_info[0] >= 3
 
 # Save the true IOs
 if IN_PYTHONISTA:
@@ -140,7 +142,7 @@ if IN_PYTHONISTA:
             def write(self, s):
                 if isinstance(s, str):
                     _outputcapture.CaptureStdout(s)
-                elif isinstance(s, six.text_type):
+                elif isinstance(s, text_type):
                     _outputcapture.CaptureStdout(s.encode("utf8"))
 
             def writelines(self, lines):
@@ -164,7 +166,7 @@ if IN_PYTHONISTA:
             def write(self, s):
                 if isinstance(s, str):
                     _outputcapture.CaptureStderr(s)
-                elif isinstance(s, six.text_type):
+                elif isinstance(s, text_type):
                     _outputcapture.CaptureStderr(s.encode("utf8"))
 
             def writelines(self, lines):
@@ -189,7 +191,7 @@ def is_binary_file(filename, nbytes=1024):
     """
     with open(filename, "rb") as ins:
         for c in ins.read(nbytes):
-            if isinstance(c, six.integer_types):
+            if isinstance(c, integer_types):
                 oc = c
             else:
                 oc = ord(c)

@@ -27,8 +27,6 @@ import sys
 import threading
 from distutils.version import StrictVersion
 
-from six.moves import input
-
 try:
     import paramiko
 except ImportError:

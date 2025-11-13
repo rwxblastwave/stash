@@ -27,8 +27,6 @@ import sys
 from distutils.version import StrictVersion
 from socket import timeout as SocketTimeout
 
-from six.moves import input
-
 import paramiko
 
 __version__ = "0.8.0"

@@ -11,15 +11,16 @@ and HEAD requests in a fairly straightforward manner.
 from __future__ import absolute_import, print_function
 
 import cgi
+import html
 import mimetypes
 import os
 import posixpath
 import re
 import shutil
+from io import StringIO
 
-from six import StringIO
-from six.moves import BaseHTTPServer
-from six.moves.urllib.parse import quote, unquote
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import quote, unquote
 
 __version__ = "0.1"
 __all__ = ["SimpleHTTPRequestHandler"]
@@ -27,7 +28,7 @@ __author__ = "bones7456"
 __home_page__ = "http://li2z.cn/"
 
 
-class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     """Simple HTTP request handler with GET/HEAD/POST commands.
 
     This serves files from the current directory and any of its
@@ -185,7 +186,7 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             return None
         list.sort(key=lambda a: a.lower())
         f = StringIO()
-        displaypath = cgi.escape(unquote(self.path))
+        displaypath = html.escape(unquote(self.path))
         f.write('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">')
         f.write("<html>\n<title>Directory listing for %s</title>\n" % displaypath)
         f.write("<body>\n<h2>Directory listing for %s</h2>\n" % displaypath)
@@ -293,7 +294,7 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 
 def main(port=8000):
-    server = BaseHTTPServer.HTTPServer(("0.0.0.0", port), SimpleHTTPRequestHandler)
+    server = HTTPServer(("0.0.0.0", port), SimpleHTTPRequestHandler)
 
     try:
         print("Serving HTTP on 0.0.0.0 port %d ..." % port)

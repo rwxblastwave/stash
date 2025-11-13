@@ -1,9 +1,6 @@
-"""
-Stub ui and terminal for testing.
-"""
+"""Stub ui and terminal for testing."""
 
-import six
-
+from ..shcommon import binary_type, text_type
 from .base import ShBaseUI, ShBaseTerminal, ShBaseSequentialRenderer
 
 
@@ -38,7 +35,7 @@ class ShTerminal(ShBaseTerminal):
 
     @text.setter
     def text(self, value):
-        assert isinstance(value, (six.text_type, six.binary_type))
+        assert isinstance(value, (text_type, binary_type))
         self._text = value
 
     @property

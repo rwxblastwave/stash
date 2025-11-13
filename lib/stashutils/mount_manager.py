@@ -3,7 +3,7 @@
 
 import os
 
-from six import string_types
+string_types = (str,)
 
 from mlpatches.mount_patches import MOUNT_PATCHES
 from stashutils.core import get_stash

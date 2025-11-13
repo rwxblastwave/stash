@@ -6,7 +6,7 @@ from __future__ import print_function
 import sys
 import argparse
 
-from six.moves.urllib.request import urlopen
+from urllib.request import urlopen
 
 try:
     import console

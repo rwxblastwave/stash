@@ -2,7 +2,7 @@
 """convert a list of args to a cmd; copied from subprocess"""
 # info: this replaces the _get_str() used previously by mlpatches
 
-from six import string_types
+string_types = (str,)
 
 
 def list2cmdline(seq):
